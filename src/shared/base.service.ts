@@ -1,4 +1,4 @@
-import { Document, Model, Types } from 'mongoose';
+import { Document, Model, Types, UpdateQuery } from 'mongoose';
 
 export abstract class BaseService<T extends Document> {
   protected _model: Model<T>;
@@ -28,12 +28,16 @@ export abstract class BaseService<T extends Document> {
   }
 
   async delete(id: string): Promise<T> {
-    return this._model.findByIdAndRemove(this.toObjectId(id)).exec();
+    return this._model
+      .findByIdAndRemove(this.toObjectId(id), { new: true })
+      .exec();
   }
 
-  //   async update(id: string, item: T): Promise<T> {
-  //     return this._model.findByIdAndUpdate(this.toObjectId(id), item, { new: true }).exec();
-  //   }
+  async update(id: string, item: UpdateQuery<T>): Promise<T> {
+    return this._model
+      .findByIdAndUpdate(this.toObjectId(id), item, { new: true })
+      .exec();
+  }
 
   async clearCollection(filter = {}): Promise<{ ok?: number; n?: number }> {
     return this._model.deleteMany(filter).exec();
