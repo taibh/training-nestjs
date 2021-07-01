@@ -24,4 +24,10 @@ export class RegisterDto extends LoginDto {
     message: 'Those passwords didn’t match. Try again.',
   })
   confirmPassword?: string;
+
+  @AutoMap()
+  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    message: 'password too weak',
+  })
+  password: string;
 }

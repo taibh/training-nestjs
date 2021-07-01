@@ -13,8 +13,5 @@ export class LoginDto {
   @ApiProperty({ type: String, default: '@xYz12345' })
   @IsNotEmpty()
   @MinLength(8)
-  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'password too weak',
-  })
   password: string;
 }

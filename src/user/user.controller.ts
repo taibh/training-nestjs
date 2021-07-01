@@ -8,8 +8,10 @@ import {
   Get,
   InternalServerErrorException,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
+import { Request } from 'express';
 
 import { RegisterDto } from './dto/register';
 import {
@@ -84,6 +86,19 @@ export class UserController {
         UserDto,
         User,
       );
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  @Get('/info')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: UserDto })
+  @ApiBadRequestResponse({ type: ApiException })
+  async getInfo(@Req() req): Promise<UserDto> {
+    try {
+      return this._mapper.map(req.user.toJSON(), UserDto, User);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
