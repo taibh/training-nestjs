@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
+  
   @Get()
   getHello(): string {
+    console.log(2132132123)
     return this.appService.getHello();
   }
 }
